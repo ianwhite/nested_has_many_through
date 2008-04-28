@@ -39,7 +39,7 @@ Here's some models from the specs:
     has_many :categories, :through => :posts, :uniq => true
     has_many :similar_posts, :through => :categories, :source => :posts
     has_many :similar_authors, :through => :similar_posts, :source => :author, :uniq => true
-    has_many :posts_of_similar_authors, :through => :similar_authors, :source => :post, :uniq => true
+    has_many :posts_of_similar_authors, :through => :similar_authors, :source => :posts, :uniq => true
     has_many :commenters, :through => :posts, :uniq => true
   end
   
@@ -59,7 +59,7 @@ The first two has_manys of Author are plain vanilla, the last four are what this
   has_many :similar_authors, :through => :similar_posts, :source => :author, :uniq => true
 
   # whoah!
-  has_many :posts_of_similar_authors, :through => :similar_authors, :source => :post, :uniq => true
+  has_many :posts_of_similar_authors, :through => :similar_authors, :source => :posts, :uniq => true
 
   # has_many through a has_many :through in another model
   has_many :commenters, :through => :posts, :uniq => true

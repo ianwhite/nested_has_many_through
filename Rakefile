@@ -56,11 +56,11 @@ task "SPECDOC" => "spec:doc"
 desc "Generate rdoc for #{plugin_name}"
 Rake::RDocTask.new(:doc) do |t|
   t.rdoc_dir = 'doc'
-  t.main     = 'README'
+  t.main     = 'README.rdoc'
   t.title    = "#{plugin_name}"
   t.template = ENV['RDOC_TEMPLATE']
   t.options  = ['--line-numbers', '--inline-source']
-  t.rdoc_files.include('README', 'SPECDOC', 'MIT-LICENSE')
+  t.rdoc_files.include('README.rdoc', 'SPECDOC', 'MIT-LICENSE')
   t.rdoc_files.include('lib/**/*.rb')
 end
 
