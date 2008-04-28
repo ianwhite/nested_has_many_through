@@ -29,35 +29,35 @@ describe Author do
       @author.commenters.should == []
     end
   
-    describe "who creates @post with @category" do
+    describe "who creates post with category" do
       before do
         @post = Post.create! :author => @author, :category => @category
       end
   
-      it "#posts should == [@post]" do
+      it "#posts should == [post]" do
         @author.posts.should == [@post]
       end
     
-      it "#categories should == [@category]" do
+      it "#categories should == [category]" do
         @author.categories.should == [@category]
       end
     
-      describe "and @other_author creates @post2 in @category" do
+      describe "and @other_author creates post2 in category" do
       
         before do
           @other_author = Author.create!
           @post2 = Post.create! :author => @other_author, :category => @category
         end
     
-        it "#posts should == [@post2]" do
+        it "#posts should == [post2]" do
           @author.posts.should == [@post]
         end
 
-        it "#categories should == [@category]" do
+        it "#categories should == [category]" do
           @author.categories.should == [@category]
         end
 
-        it "#similar_posts.should == [@post, @post2]" do
+        it "#similar_posts.should == [post, post2]" do
           @author.similar_posts.should == [@post, @post2]
         end
       

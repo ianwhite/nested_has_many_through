@@ -1,37 +1,70 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '../spec_helper'))
 require File.expand_path(File.join(File.dirname(__FILE__), '../app'))
 
-describe 'Commenter use case (@a1 has @p1 in @c1, @p2 in @c2)' do
+describe 'Commenter use case (a1: p1>c1, a2: p2>c1, p3>c2, a3: p4>c3)' do
   before do
     @c1 = Category.create!
     @c2 = Category.create!
+    @c3 = Category.create!
     @a1 = Author.create!
+    @a2 = Author.create!
+    @a3 = Author.create!
     @p1 = @a1.posts.create! :category => @c1
-    @p2 = @a1.posts.create! :category => @c2
+    @p2 = @a2.posts.create! :category => @c1
+    @p3 = @a2.posts.create! :category => @c2
+    @p4 = @a3.posts.create! :category => @c3
     @a1.reload
+    @a2.reload
   end
 
-  it "@a1.posts should == [@p1, @p2]" do
-    @a1.posts.should == [@p1, @p2]
+  it "a1.posts should == [p1]" do
+    @a1.posts.should == [@p1]
   end
 
-  it "@a1.categories should == [@c1, @c2]" do
-    @a1.categories.should == [@c1, @c2]
+  it "a1.categories should == [c1]" do
+    @a1.categories.should == [@c1]
   end
   
-  describe "@u1 comments on @p1, p2" do
+  it "a2.posts should == [p2, p3]" do
+    @a2.posts.should == [@p2, @p3]
+  end
+
+  it "a2.categories should == [c1, c2]" do
+    @a2.categories.should == [@c1, @c2]
+  end
+  
+  describe "u1 comments on p2" do
     before do
       @u1 = User.create!
-      @c1 = @p1.comments.create! :user => @u1
-      @c2 = @p2.comments.create! :user => @u1
+      @comment = @p2.comments.create! :user => @u1
     end
     
-    it "@u1.comments should == [@c1, @c2]" do
-      @u1.comments.should == [@c1, @c2]
+    it "u1.comments should == [comment]" do
+      @u1.comments.should == [@comment]
     end
     
-    it "@a1.commenters.should == [@u1]" do
-      @a1.commenters.should == [@u1]
+    it "a1.commenters.should == []" do
+      @a1.commenters.should == []
+    end
+    
+    it "a2.commenters.should == [u1]" do
+      @a2.commenters.should == [@u1]
+    end
+    
+    it "u1.commented_posts.should == [p2]" do
+      @u1.commented_posts.should == [@p2]
+    end
+    
+    it "u1.commented_authors.should == [a2]" do
+      @u1.commented_authors.should == [@a2]
+    end
+    
+    it "u1.posts_of_interest.should == [p1, p2, p3]" do
+      @u1.posts_of_interest.should == [@p1, @p2, @p3]
+    end
+    
+    it "u1.categories_of_interest.should == [c1, c2]" do
+      @u1.categories_of_interest.should == [@c1, @c2]
     end
   end
 end
