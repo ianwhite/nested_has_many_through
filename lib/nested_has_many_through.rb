@@ -7,11 +7,8 @@ module NestedHasManyThrough
     def check_validity_with_nested_has_many_through!
       check_validity_without_nested_has_many_through!
     rescue ActiveRecord::HasManyThroughSourceAssociationMacroError => e
-      if source_reflection.options[:through]
-        # now we permit has many through to a :though source
-      else
-        raise e
-      end
+      # now we permit has many through to a :though source
+      raise e unless source_reflection.options[:through]
     end
   end
   
@@ -20,38 +17,6 @@ module NestedHasManyThrough
       base.send :alias_method_chain, :construct_conditions, :nested
       base.send :alias_method_chain, :construct_joins, :nested
     end
-    
-    #def find_target_with_nested_has_many_through(*args)
-    #  puts "EDASSADSADADSSDEEEEE"
-    #  if nested_has_many_through?
-    #    options = Base.send(:extract_options_from_args!, args)
-    #
-    #    conditions = construct_conditions
-    #    if sanitized_conditions = sanitize_sql(options[:conditions])
-    #      conditions = conditions.dup << " AND (#{sanitized_conditions})"
-    #    end
-    #    options[:conditions] = conditions
-    #
-    #    if options[:order] && @reflection.options[:order]
-    #      options[:order] = "#{options[:order]}, #{@reflection.options[:order]}"
-    #    elsif @reflection.options[:order]
-    #      options[:order] = @reflection.options[:order]
-    #    end
-    #
-    #    options[:select]  = construct_select(options[:select])
-    #    options[:from]  ||= construct_from
-    #    options[:joins]   = construct_joins + " #{options[:joins]}"
-    #    options[:include] = @reflection.source_reflection.options[:include] if options[:include].nil?
-    #
-    #    merge_options_from_reflection!(options)
-    #
-    #    # Pass through args exactly as we received them.
-    #    args << options
-    #    @reflection.klass.find(*args)
-    #  else
-    #    find_without_nested_has_many_through(*args)
-    #  end
-    #end
 
   protected
     # Build SQL conditions from attributes, qualified by table name.
