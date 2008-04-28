@@ -1,6 +1,7 @@
 # This is for running specs against target versions of rails
 #
-# To do so
+# To use do
+#   - cp garlic_example.rb garlic.rb
 #   - rake get_garlic
 #   - [optional] edit this file to point the repos at your local clones of
 #     rails, rspec, and rspec-rails
@@ -16,9 +17,9 @@ garlic do
 
   # repo, give a url, specify :local to use a local repo (faster
   # and will still update from the origin url)
-  repo 'rails', :url => 'git://github.com/rails/rails' #,  :local => "~/dev/vendor/rails"
-  repo 'rspec', :url => 'git://github.com/dchelimsky/rspec' #,  :local => "~/dev/vendor/rspec"
-  repo 'rspec-rails', :url => 'git://github.com/dchelimsky/rspec-rails' #, :local => '~/dev/vendor/rspec-rails
+  repo 'rails', :url => 'git://github.com/rails/rails'#,  :local => "~/dev/vendor/rails"
+  repo 'rspec', :url => 'git://github.com/dchelimsky/rspec'#,  :local => "~/dev/vendor/rspec"
+  repo 'rspec-rails', :url => 'git://github.com/dchelimsky/rspec-rails'#, :local => "~/dev/vendor/rspec-rails"
   repo 'nested_has_many_through', :path => '.'
 
   # for target, default repo is 'rails', default branch is 'master'
