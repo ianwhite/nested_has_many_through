@@ -1,1 +1,12 @@
 = nested_has_many_through
+
+This has been floating around for a while:
+
+* http://code.torchbox.com/svn/rails/plugins/nested_has_many_through
+* http://dev.rubyonrails.org/ticket/6461
+
+I'm packaging/refactoring it up in a plugin with specs
+
+== Why?
+
+The current implementations are really poorly speced/tested, and the lastest patches don't seem to apply on edge.
