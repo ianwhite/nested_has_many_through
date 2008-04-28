@@ -5,7 +5,8 @@ A fantastic patch/plugin has been floating around for a while:
 * http://dev.rubyonrails.org/ticket/6461
 * http://code.torchbox.com/svn/rails/plugins/nested_has_many_through
 
-Matt Westcott released the first version, under the MIT license.
+Matt Westcott released the first version of the plugin, under the MIT license.
+Many others have contributed, see the trac ticket for details.
 
 Here is a refactored version (I didn't write the original), suitable for edge/2.0-stable
 with a bunch of acceptance specs.  I'm concentrating on plugin usage, once 
