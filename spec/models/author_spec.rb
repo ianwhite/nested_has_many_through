@@ -17,12 +17,12 @@ describe Author do
       @author.categories.should == []
     end
   
-    it "#recommended_posts should == []" do
-      @author.recommended_posts.should == []
+    it "#similar_posts should == []" do
+      @author.similar_posts.should == []
     end
   
-    it "#recommended_authors should == []" do
-      @author.recommended_authors.should == []
+    it "#similar_authors should == []" do
+      @author.similar_authors.should == []
     end
   
     it "#commenters should == []" do
@@ -58,12 +58,12 @@ describe Author do
           @author.categories.should == [@category]
         end
 
-        it "#recommended_posts.should == [@post, @other_post]" do
-          @author.recommended_posts.should == [@post, @other_post]
+        it "#similar_posts.should == [@post, @other_post]" do
+          @author.similar_posts.should == [@post, @other_post]
         end
       
-        it "#recommended_authors.should == [@author, @other_author]" do
-          @author.recommended_authors.should == [@author, @other_author]
+        it "#similar_authors.should == [@author, @other_author]" do
+          @author.similar_authors.should == [@author, @other_author]
         end
       end
     end

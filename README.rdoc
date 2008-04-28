@@ -1,22 +1,24 @@
 = nested_has_many_through
 
-This fantastic patch/plugin has been floating around for a while:
+A fantastic patch/plugin has been floating around for a while:
 
 * http://dev.rubyonrails.org/ticket/6461
 * http://code.torchbox.com/svn/rails/plugins/nested_has_many_through
 
-I didn't write it, but I'm packaging/refactoring it up in a plugin, and writing
-a bunch of acceptance specs for it.
+Matt Westcott released the first version, under the MIT license.
 
-Matt Westcott released the first version, under the MIT license
+Here is a refactored version (I didn't write the original), suitable for edge/2.0-stable
+with a bunch of acceptance specs.  I'm concentrating on plugin usage, once 
+it becomes stable, and well enough speced/understood, then it's time to pester
+rails-core.
 
 == Why republish this on github?
 
 * The current implementations are very poorly speced/tested, so it's pretty 
-  hard to refactor and undertand this complicated bit of sql-fu, especially
+  hard to refactor and understand this complicated bit of sql-fu, especially
   when you're aiming at a moving target (edge)
 * the lastest patches don't apply on edge
-* github mania - let's collab to make this better and get a patch accepted, fork away!1
+* github - let's collab to make this better and get a patch accepted, fork away!
 
 == History
 
