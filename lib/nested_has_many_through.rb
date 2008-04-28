@@ -14,26 +14,20 @@ module NestedHasManyThrough
   
   module Association
     def self.included(base)
-      base.send :alias_method_chain, :construct_conditions, :nested
-      base.send :alias_method_chain, :construct_joins, :nested
+      base.class_eval do
+        def construct_conditions
+          @nested_join_attributes ||= construct_nested_join_attributes
+          "#{@nested_join_attributes[:remote_key]} = #{@owner.quoted_id} #{@nested_join_attributes[:conditions]}"
+        end
+
+        def construct_joins
+          @nested_join_attributes ||= construct_nested_join_attributes
+          @nested_join_attributes[:joins]
+        end
+      end
     end
 
-  protected
-    # Build SQL conditions from attributes, qualified by table name.
-    def construct_conditions_with_nested
-      @nested_join_attributes ||= construct_nested_join_attributes
-      "#{@nested_join_attributes[:remote_key]} = #{@owner.quoted_id} #{@nested_join_attributes[:conditions]}"
-    end
-
-    def construct_joins_with_nested
-      @nested_join_attributes ||= construct_nested_join_attributes
-      @nested_join_attributes[:joins]
-    end
-
-    def has_many_through?(reflection = @reflection)
-      reflection.macro == :has_many && reflection.through_reflection
-    end
-
+  protected    
     # Given any belongs_to or has_many (including has_many :through) association,
     # return the essential components of a join corresponding to that association, namely:
     #
@@ -50,7 +44,7 @@ module NestedHasManyThrough
       association_class = reflection.klass,
       table_ids = {association_class.table_name => 1})
 
-      if has_many_through?(reflection)
+      if reflection.macro == :has_many && reflection.through_reflection
         # Construct the join components of the source association, so that we have a path from
         # the eventual target table of the association up to the table named in :through, and
         # all tables involved are allocated table IDs.
