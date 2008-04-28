@@ -10,6 +10,16 @@ a bunch of acceptance specs for it.
 
 Matt Westcott released the first version, under the MIT license
 
+== Why republish this on github?
+
+* The current implementations are very poorly speced/tested, so it's pretty 
+  hard to refactor and undertand this complicated bit of sql-fu, especially
+  when you're aiming at a moving target (edge)
+* the lastest patches don't apply on edge
+* github mania - let's collab to make this better and get a patch accepted, fork away!1
+
+== History
+
 Here's the original description:
 
   This plugin makes it possible to define has_many :through relationships that
@@ -17,6 +27,8 @@ Here's the original description:
   arbitrarily deep hierarchy. This allows associations across any number of
   tables to be constructed, without having to resort to find_by_sql (which isn't
   a suitable solution if you need to do eager loading through :include as well).
+
+== Show me the money!
 
 Here's some models from the specs:
 
@@ -50,10 +62,9 @@ The first two has_manys of Author are plain vanilla, the last four are what this
   # has_many through a has_many :through in another model
   has_many :commenters, :through => :posts, :uniq => true
 
-== Why republish this on github?
+== What does it run on?
 
-* The current implementations are very poorly speced/tested, so it's pretty 
-  hard to refactor and undertand this complicated bit of sql-fu, especially
-  when you're aiming at a moving target (edge)
-* the lastest patches don't apply on edge
-* github mania - let's collab to make this better and get a patch accepted, fork away!1
+Currently it's running on edge, 2.0-stable and 2.0.2
+
+If you want to run the CI suite, then check out garlic_example.rb (The CI suite
+is being cooked with garlic - git://github.com/ianwhite/garlic)
