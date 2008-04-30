@@ -13,6 +13,7 @@ ActiveRecord::Migration.suppress_messages do
     create_table :posts, :force => true do |t|
       t.column "author_id", :integer
       t.column "category_id", :integer
+      t.column "inflamatory", :boolean
     end
 
     create_table :categories, :force => true do |t|
@@ -56,6 +57,17 @@ class Author < User
 end
 
 class Post < ActiveRecord::Base
+  
+  # testing with_scope
+  def self.find_inflamatory(*args)
+    with_scope :find => {:conditions => {:inflamatory => true}} do
+      find(*args)
+    end
+  end
+
+  # only test named_scope in edge
+  named_scope(:inflamatory) if respond_to?(:named_scope)
+  
   belongs_to :author
   belongs_to :category
   has_many :comments

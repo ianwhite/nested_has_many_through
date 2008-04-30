@@ -43,28 +43,66 @@ describe 'Commenter use case (a1: p1>c1, a2: p2>c1, p3>c2, a3: p4>c3)' do
       @u1.comments.should == [@comment]
     end
     
-    it "a1.commenters.should == []" do
-      @a1.commenters.should == []
+    it "a1.commenters should be empty" do
+      @a1.commenters.should be_empty
     end
     
-    it "a2.commenters.should == [u1]" do
+    it "a2.commenters should == [u1]" do
       @a2.commenters.should == [@u1]
     end
     
-    it "u1.commented_posts.should == [p2]" do
+    it "u1.commented_posts should == [p2]" do
       @u1.commented_posts.should == [@p2]
     end
     
-    it "u1.commented_authors.should == [a2]" do
+    it "u1.commented_posts.find_inflamatory(:all) should be empty" do
+      @u1.commented_posts.find_inflamatory(:all).should be_empty
+    end
+    
+    if ActiveRecord::Base.respond_to?(:named_scope)
+      it "u1.commented_posts.inflamatory should be empty" do
+        @u1.commented_posts.inflamatory.should be_empty
+      end
+    end
+    
+    it "u1.commented_authors should == [a2]" do
       @u1.commented_authors.should == [@a2]
     end
     
-    it "u1.posts_of_interest.should == [p1, p2, p3]" do
+    it "u1.posts_of_interest should == [p1, p2, p3]" do
       @u1.posts_of_interest.should == [@p1, @p2, @p3]
     end
     
-    it "u1.categories_of_interest.should == [c1, c2]" do
+    it "u1.categories_of_interest should == [c1, c2]" do
       @u1.categories_of_interest.should == [@c1, @c2]
+    end
+    
+    describe "when p2 is inflamatory" do
+      before do
+        @p2.toggle!(:inflamatory)
+      end
+      
+      it "p2 should be inflamatory" do
+        @p2.should be_inflamatory
+      end
+      
+      it "u1.commented_posts.find_inflamatory(:all) should == [p2]" do
+        @u1.commented_posts.find_inflamatory(:all).should == [@p2]
+      end
+        
+      it "u1.posts_of_interest.find_inflamatory(:all) should == [p2]" do
+        @u1.posts_of_interest.find_inflamatory(:all).should == [@p2]
+      end
+      
+      if ActiveRecord::Base.respond_to?(:named_scope)
+        it "u1.commented_posts.inflamatory should == [p2]" do
+          @u1.commented_posts.inflamatory.should == [@p2]
+        end
+
+        it "u1.posts_of_interest.inflamatory should == [p2]" do
+          @u1.posts_of_interest.inflamatory.should == [@p2]
+        end
+      end
     end
   end
 end
