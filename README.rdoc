@@ -22,6 +22,11 @@ rails-core.
 * the lastest patches don't apply on edge
 * github - let's collab to make this better and get a patch accepted, fork away!
 
+== Help out
+
+I'm releasing 'early and often' in the hope that people will use it and find bugs/problems.
+Report them at http://ianwhite.lighthouseapp.com, or fork and pull request, yada yada.
+
 == History
 
 Here's the original description:
