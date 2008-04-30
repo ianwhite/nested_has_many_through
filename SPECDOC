@@ -28,13 +28,22 @@ Commenter use case (a1: p1>c1, a2: p2>c1, p3>c2, a3: p4>c3)
 
 Commenter use case (a1: p1>c1, a2: p2>c1, p3>c2, a3: p4>c3) u1 comments on p2
 - u1.comments should == [comment]
-- a1.commenters.should == []
-- a2.commenters.should == [u1]
-- u1.commented_posts.should == [p2]
-- u1.commented_authors.should == [a2]
-- u1.posts_of_interest.should == [p1, p2, p3]
-- u1.categories_of_interest.should == [c1, c2]
+- a1.commenters should be empty
+- a2.commenters should == [u1]
+- u1.commented_posts should == [p2]
+- u1.commented_posts.find_inflamatory(:all) should be empty
+- u1.commented_posts.inflamatory should be empty
+- u1.commented_authors should == [a2]
+- u1.posts_of_interest should == [p1, p2, p3]
+- u1.categories_of_interest should == [c1, c2]
 
-Finished in 0.367715 seconds
+Commenter use case (a1: p1>c1, a2: p2>c1, p3>c2, a3: p4>c3) u1 comments on p2 when p2 is inflamatory
+- p2 should be inflamatory
+- u1.commented_posts.find_inflamatory(:all) should == [p2]
+- u1.posts_of_interest.find_inflamatory(:all) should == [p2]
+- u1.commented_posts.inflamatory should == [p2]
+- u1.posts_of_interest.inflamatory should == [p2]
 
-24 examples, 0 failures
+Finished in 0.538693 seconds
+
+31 examples, 0 failures
