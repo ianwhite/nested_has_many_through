@@ -20,9 +20,9 @@ module NestedHasManyThrough
           "#{@nested_join_attributes[:remote_key]} = #{@owner.quoted_id} #{@nested_join_attributes[:conditions]}"
         end
 
-        def construct_joins
+        def construct_joins(custom_joins = nil)
           @nested_join_attributes ||= construct_nested_join_attributes
-          @nested_join_attributes[:joins]
+          "#{@nested_join_attributes[:joins]} #{custom_joins}"
         end
       end
     end
@@ -39,11 +39,9 @@ module NestedHasManyThrough
     #   take part in the join
     # * <tt>:conditions</tt>: any additional conditions (e.g. filtering by type for a polymorphic association,
     #    or a :conditions clause explicitly given in the association), including a leading AND
-    def construct_nested_join_attributes(
-      reflection = @reflection,
-      association_class = reflection.klass,
-      table_ids = {association_class.table_name => 1})
-
+    def construct_nested_join_attributes( reflection = @reflection, 
+                                          association_class = reflection.klass,
+                                          table_ids = {association_class.table_name => 1})
       if reflection.macro == :has_many && reflection.through_reflection
         construct_has_many_through_attributes(reflection, table_ids)
       else

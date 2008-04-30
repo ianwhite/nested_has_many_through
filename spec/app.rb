@@ -66,7 +66,7 @@ class Post < ActiveRecord::Base
   end
 
   # only test named_scope in edge
-  named_scope(:inflamatory) if respond_to?(:named_scope)
+  named_scope(:inflamatory, :conditions => {:inflamatory => true}) if respond_to?(:named_scope)
   
   belongs_to :author
   belongs_to :category
