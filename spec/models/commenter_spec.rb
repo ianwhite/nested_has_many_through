@@ -87,11 +87,12 @@ describe 'Commenter use case (a1: p1>c1, a2: p2>c1, p3>c2, a3: p4>c3)' do
       end
       
       it "u1.commented_posts.find_inflamatory(:all) should == [p2]" do
-        @u1.commented_posts.find_inflamatory(:all).should == [@p2]
+        # uniq ids is here (and next spec) because eager loading changed behaviour 2.0.2 => edge
+        @u1.commented_posts.find_inflamatory(:all).collect(&:id).uniq.should == [@p2.id]
       end
         
-      it "u1.posts_of_interest.find_inflamatory(:all) should == [p2]" do
-        @u1.posts_of_interest.find_inflamatory(:all).should == [@p2]
+      it "u1.posts_of_interest.find_inflamatory(:all).uniq should == [p2]" do
+        @u1.posts_of_interest.find_inflamatory(:all).collect(&:id).uniq.should == [@p2.id]
       end
       
       if ActiveRecord::Base.respond_to?(:named_scope)
