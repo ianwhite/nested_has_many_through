@@ -26,6 +26,8 @@ garlic do
   target 'edge'
   target '2.0-stable', :branch => 'origin/2-0-stable'
   target '2.0.2', :tag => 'v2.0.2'
+  target '2.0.3', :tag => 'v2.0.3'
+  target '2.1-RC1', :tag => 'v2.1.0_RC1'
 
   all_targets do
     prepare do
