@@ -6,11 +6,31 @@ require 'spec/rake/spectask'
 require 'spec/rake/verify_rcov'
 require 'rake/rdoctask'
 
-plugin_name = File.basename(File.dirname(__FILE__))
+plugin_name = 'nested_has_many_through'
 
 task :default => :spec
 
-task :cruise => "garlic:all"
+task :cruise do
+  # run the garlic task, capture the output, if succesful make the docs and copy them to ardes
+  begin
+    sh "rake garlic:all > garlic_report.txt"
+    
+    # send abridged rpeort
+    report = File.read('garlic_report.txt').sub(/^.*?==========/m, '==========')
+    report = "garlic report for #{plugin_name}\n#{`git log -n 1 --pretty=oneline --no-color`}\n" + report
+    File.open('garlic_report.txt', 'w+') {|f| f << report }
+    sh "scp -i ~/.ssh/ardes garlic_report.txt ardes@ardes.com:~/subdomains/plugins/httpdocs/doc/#{plugin_name}_garlic_report.txt"
+
+    # build doc and send that
+    cd "garlic/work/edge/vendor/plugins/#{plugin_name}" do
+      sh "rake doc:all"
+      sh "scp -i ~/.ssh/ardes -r doc ardes@ardes.com:~/subdomains/plugins/httpdocs/doc/#{plugin_name}"
+    end
+    
+  ensure
+    puts File.read('garlic_report.txt')
+  end
+end
 
 desc "Run the specs for #{plugin_name}"
 Spec::Rake::SpecTask.new(:spec) do |t|

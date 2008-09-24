@@ -1,3 +1,5 @@
+http://plugins.ardes.com > nested_has_many_through
+
 = nested_has_many_through
 
 A fantastic patch/plugin has been floating around for a while:
