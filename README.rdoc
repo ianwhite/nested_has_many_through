@@ -45,7 +45,8 @@ Here's the original description:
 * terceiro
 * shoe
 * mhoroschun
-* Ian White
+* Ian White (http://github.com/ianwhite)
+* Claudio (http://github.com/masterkain)
 
 Get in touch if you should be on this list
 
