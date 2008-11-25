@@ -5,22 +5,24 @@ garlic do
   repo 'rspec', :url => 'git://github.com/dchelimsky/rspec'
   repo 'rspec-rails', :url => 'git://github.com/dchelimsky/rspec-rails'
   
-  #target 'edge', :branch => 'origin/master'
-  target '2.2', :branch => 'origin/2-2-stable'
-  target '2.1', :branch => 'origin/2-1-stable'
-  target '2.0', :branch => 'origin/2-0-stable'
+  # target rails versions
+  ['origin/2-2-stable', 'origin/2-1-stable', 'origin/2-0-stable'].each do |rails|    
+      # specify how to prepare app and run CI task
+      target "Rails: #{rails}", :tree_ish => rails do
+        prepare do
+          plugin 'rspec'
+          plugin 'rspec-rails' do
+            `script/generate rspec -f`
+          end
+          plugin 'nested_has_many_through', :clone => true
+        end
   
-  all_targets do
-    prepare do
-      plugin 'rspec'
-      plugin('rspec-rails') { `script/generate rspec -f` }
-      plugin 'nested_has_many_through', :clone => true
-    end
-  
-    run do
-      cd "vendor/plugins/nested_has_many_through" do
-        sh "rake spec:rcov:verify"
+        run do
+          cd "vendor/plugins/nested_has_many_through" do
+            sh "rake spec:rcov:verify"
+          end
+        end
       end
-    end
-  end
+    end # rspecs
+  end # railses
 end
