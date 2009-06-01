@@ -6,7 +6,7 @@ garlic do
   repo 'rspec-rails', :url => 'git://github.com/dchelimsky/rspec-rails'
   
   # target rails versions
-  ['2-2-stable', '2-1-stable'].each do |rails|
+  ['2-3-stable', '2-2-stable', '2-1-stable'].each do |rails|
     target rails, :branch => "origin/#{rails}" do
       prepare do
         plugin 'rspec'
