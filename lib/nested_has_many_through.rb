@@ -105,8 +105,8 @@ module NestedHasManyThrough
       end
       
       conditions = ''
-      # Add filter for single-table inheritance, if applicable.
-      conditions += " AND #{remote_table_alias}.#{association_class.inheritance_column} = #{association_class.quote_value(association_class.name.demodulize)}" unless association_class.descends_from_active_record?
+      # Add type_condition, if applicable
+      conditions += " AND #{association_class.send(:type_condition, remote_table_alias)}" unless association_class.descends_from_active_record?
       # Add custom conditions
       conditions += " AND (#{interpolate_sql(association_class.send(:sanitize_sql, reflection.options[:conditions]))})" if reflection.options[:conditions]
       
