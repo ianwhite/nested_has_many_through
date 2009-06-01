@@ -6,9 +6,8 @@ garlic do
   repo 'rspec-rails', :url => 'git://github.com/dchelimsky/rspec-rails'
   
   # target rails versions
-  ['origin/2-2-stable', 'origin/2-1-stable', 'origin/2-0-stable'].each do |rails|
-    # specify how to prepare app and run CI task
-    target "Rails: #{rails}", :tree_ish => rails do
+  ['2-2-stable', '2-1-stable'].each do |rails|
+    target rails, :branch => "origin/#{rails}" do
       prepare do
         plugin 'rspec'
         plugin 'rspec-rails' do
