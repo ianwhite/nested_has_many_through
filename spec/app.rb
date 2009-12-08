@@ -39,8 +39,13 @@ end
 #                                            similar_posts is be a subset of this collection)
 #   - authors have commenters: users who have commented on their posts
 #
+# Following model is added to verify the has_many/belongs_to :through relationship still works (as it is currently broken)
+#   - authors have many assistants: they can access the posts of their author
+
 class User < ActiveRecord::Base
   has_many :comments
+  
+  # Possible cases added by this plugin
   has_many :commented_posts, :through => :comments, :source => :post, :uniq => true
   has_many :commented_authors, :through => :commented_posts, :source => :author, :uniq => true
   has_many :posts_of_interest, :through => :commented_authors, :source => :posts_of_similar_authors, :uniq => true
@@ -48,12 +53,17 @@ class User < ActiveRecord::Base
 end
 
 class Author < User
+  # Normal cases
   has_many :posts
   has_many :categories, :through => :posts
+  has_many :commenters, :through => :posts, :uniq => true
+  has_many :assistants
+  
+  # Possible cases added by this plugin
   has_many :similar_posts, :through => :categories, :source => :posts
   has_many :similar_authors, :through => :similar_posts, :source => :author, :uniq => true
   has_many :posts_of_similar_authors, :through => :similar_authors, :source => :posts, :uniq => true
-  has_many :commenters, :through => :posts, :uniq => true
+
 end
 
 class Post < ActiveRecord::Base
@@ -81,4 +91,18 @@ end
 class Comment < ActiveRecord::Base
   belongs_to :user
   belongs_to :post
+end
+
+class Assistant < ActiveRecord::Base
+  # Normal cases
+  belongs_to :author
+  has_many :posts, :through => :author
+  
+  # Possible cases added by this plugin
+  with_options :uniq => true do |w|
+    w.has_many :categories, :through => :posts
+    w.has_many :similar_posts, :through => :categories, :source => :posts
+    w.has_many :similar_authors, :through => :similar_posts, :source => :author
+    w.has_many :posts_of_similar_authors, :through => :similar_authors, :source => :posts
+  end
 end
