@@ -23,6 +23,11 @@ ActiveRecord::Migration.suppress_messages do
       t.column "user_id", :integer
       t.column "post_id", :integer
     end
+    
+    create_table :assistants, :force => true do |t|
+      t.column "author_id", :integer
+      t.column "name", :string
+    end
   end
 end
 
