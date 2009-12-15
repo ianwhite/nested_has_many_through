@@ -28,63 +28,40 @@ describe "NestedThrough::Reflection" do
     end
   end
   
-  describe "has_many (non through)" do
-    before do
-      @reflection = NTRSpec::User.reflect_on_association(:posts)
+  describe "has_many" do
+    describe "(non through)" do
+      before { @reflection = NTRSpec::User.reflect_on_association(:posts) }
+      it { @reflection.should_not be_nested_through }
+      it { @reflection.should_not be_source_through }
+      it_should_behave_like "valid reflection"
     end
-    
-    it { @reflection.should_not be_nested_through }
-
-    it { @reflection.should_not be_source_through }
-    
-    it_should_behave_like "valid reflection"
-  end
   
-  describe "has_many (non nested through)" do
-    before do
-      @reflection = NTRSpec::User.reflect_on_association(:categories)
+    describe "(non nested through)" do
+      before { @reflection = NTRSpec::User.reflect_on_association(:categories) }
+      it { @reflection.should_not be_nested_through }
+      it { @reflection.should_not be_source_through }
+      it_should_behave_like "valid reflection"
     end
-    
-    it { @reflection.should_not be_nested_through }
-
-    it { @reflection.should_not be_source_through }
-    
-    it_should_behave_like "valid reflection"
-  end
   
-  describe "has_many (nested through)" do
-    before do
-      @reflection = NTRSpec::User.reflect_on_association(:similar_posts)
+    describe "(nested through)" do
+      before { @reflection = NTRSpec::User.reflect_on_association(:similar_posts) }
+      it { @reflection.should be_nested_through }
+      it { @reflection.should_not be_source_through }
+      it_should_behave_like "valid reflection"
     end
-    
-    it { @reflection.should be_nested_through }
-
-    it { @reflection.should_not be_source_through }
-    
-    it_should_behave_like "valid reflection"
-  end
   
-  describe "has_many (source through)" do
-    before do
-      @reflection = NTRSpec::Post.reflect_on_association(:similar_categories)
+    describe "(source through)" do
+      before { @reflection = NTRSpec::Post.reflect_on_association(:similar_categories) }
+      it { @reflection.should_not be_nested_through }
+      it { @reflection.should be_source_through }
+      it_should_behave_like "valid reflection"
     end
-    
-    it { @reflection.should_not be_nested_through }
-
-    it { @reflection.should be_source_through }
-    
-    it_should_behave_like "valid reflection"
-  end
   
-  describe "has_many (source & nested through)" do
-    before do
-      @reflection = NTRSpec::Post.reflect_on_association(:similar_post_authors)
+    describe "(source & nested through)" do
+      before { @reflection = NTRSpec::Post.reflect_on_association(:similar_post_authors) }
+      it { @reflection.should be_nested_through }
+      it { @reflection.should be_source_through }
+      it_should_behave_like "valid reflection"
     end
-
-    it { @reflection.should be_nested_through }
-
-    it { @reflection.should be_source_through }
-    
-    it_should_behave_like "valid reflection"
   end
 end
