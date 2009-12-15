@@ -5,19 +5,24 @@ module NTRSpec
   class Category < ActiveRecord::Base
     has_many :posts, :class_name => 'NTRSpec::Post'
     has_many :users, :through => :posts, :class_name => 'NTRSpec::User'
+    has_one :first_post, :class_name => 'NTRSpec::Post'
+    has_one :first_user, :through => :posts, :source => :user, :class_name => 'NTRSpec::User'
   end
   
   class User < ActiveRecord::Base
     has_many :posts, :class_name => 'NTRSpec::Post'
     has_many :categories, :through => :posts, :class_name => 'NTRSpec::Category'
     has_many :similar_posts, :through => :categories, :source => :posts, :class_name => 'NTRSpec::Post'
+    has_one :first_similar_post, :through => :categories, :source => :posts, :class_name => 'NTRSpec::Post'
   end
   
   class Post < ActiveRecord::Base
     belongs_to :user, :class_name => 'NTRSpec::User'
     belongs_to :category, :class_name => 'NTRSpec::Category'
     has_many :similar_categories, :through => :user, :source => :categories, :class_name => 'NTRSpec::Category'
+    has_one :first_similar_category, :through => :user, :source => :categories, :class_name => 'NTRSpec::Category'
     has_many :similar_post_authors, :through => :similar_categories, :source => :users, :class_name => 'NTRSpec::User'
+    has_one :first_similar_post_author, :through => :similar_categories, :source => :first_user, :class_name => 'NTRSpec::User'
   end
 end
 
@@ -59,6 +64,43 @@ describe "NestedThrough::Reflection" do
   
     describe "(source & nested through)" do
       before { @reflection = NTRSpec::Post.reflect_on_association(:similar_post_authors) }
+      it { @reflection.should be_nested_through }
+      it { @reflection.should be_source_through }
+      it_should_behave_like "valid reflection"
+    end
+  end
+  
+  describe "has_one" do
+    describe "(non through)" do
+      before { @reflection = NTRSpec::Category.reflect_on_association(:first_post) }
+      it { @reflection.should_not be_nested_through }
+      it { @reflection.should_not be_source_through }
+      it_should_behave_like "valid reflection"
+    end
+  
+    describe "(non nested through)" do
+      before { @reflection = NTRSpec::Category.reflect_on_association(:first_user) }
+      it { @reflection.should_not be_nested_through }
+      it { @reflection.should_not be_source_through }
+      it_should_behave_like "valid reflection"
+    end
+  
+    describe "(nested through)" do
+      before { @reflection = NTRSpec::User.reflect_on_association(:first_similar_post) }
+      it { @reflection.should be_nested_through }
+      it { @reflection.should_not be_source_through }
+      it_should_behave_like "valid reflection"
+    end
+  
+    describe "(source through)" do
+      before { @reflection = NTRSpec::Post.reflect_on_association(:first_similar_category) }
+      it { @reflection.should_not be_nested_through }
+      it { @reflection.should be_source_through }
+      it_should_behave_like "valid reflection"
+    end
+  
+    describe "(source & nested through)" do
+      before { @reflection = NTRSpec::Post.reflect_on_association(:first_similar_post_author) }
       it { @reflection.should be_nested_through }
       it { @reflection.should be_source_through }
       it_should_behave_like "valid reflection"
