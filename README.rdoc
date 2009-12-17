@@ -1,4 +1,4 @@
-http://plugins.ardes.com > nested_has_many_through
+== NOTE: rails 2.3 users might want to try the experimental rails-2.3 branch
 
 = nested_has_many_through
 
