@@ -1,5 +1,5 @@
 module NestedThrough
-  # extension for ActiveRecord::Base which created NestedThrough associations
+  # extension for ActiveRecord::Base which creates NestedThrough associations
   module Associations
     def has_many(association_id, options = {}, &extension)
       reflection = create_has_many_reflection(association_id, options, &extension)
@@ -19,12 +19,6 @@ module NestedThrough
       else
         super
       end
-    end
-    
-  private
-    def through_association?(assoc_name)
-      reflection = reflect_on_association(assoc_name)
-      reflection.respond_to?(:through_reflection) && reflection.through_reflection
     end
   end
 end
