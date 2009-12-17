@@ -24,7 +24,7 @@ module NestedThrough
   private
     def through_association?(assoc_name)
       reflection = reflect_on_association(assoc_name)
-      reflection && reflection.through_association
+      reflection.respond_to?(:through_reflection) && reflection.through_reflection
     end
   end
 end
