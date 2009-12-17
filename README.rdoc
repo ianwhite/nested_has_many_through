@@ -1,6 +1,6 @@
 = Rewrite of nested_has_many_through
 
-== THIS IS NOT WORKING ATM
+=== Most of the desired behaviour is working, 7 failing test cases though.
 
 * Isolate new behaviour by making new association classes for the new behaviour
 * Defer to rails when possible
