@@ -92,13 +92,7 @@ describe Assistant do
             @assistant.posts_of_similar_authors.should == @posts + @other_posts
           end
         end
-        
       end
-      
-      
     end
-    
-    
   end
-
 end

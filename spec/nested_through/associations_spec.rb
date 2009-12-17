@@ -36,6 +36,10 @@ describe NestedThrough::Associations do
       @author.categories.nested_through?.should == false
     end
     
+    it "source through should be nested_has_many_through" do
+      @author.commenters.nested_has_many_through?.should == true
+    end
+    
     it "nested through should be nested_has_many_through" do
       @author.similar_posts.nested_has_many_through?.should == true
     end
@@ -50,8 +54,12 @@ describe NestedThrough::Associations do
       @author.first_category.nested_through?.should == false
     end
     
+    it "source through should be nested_has_many_through" do
+      @author.first_commenter.nested_has_many_through?.should == true
+    end
+    
     it "nested through should be nested_has_many_through" do
-      @author.first_commenter.nested_has_one_through?.should == true
+      @author.first_similar_post.nested_has_one_through?.should == true
     end
   end
 end
