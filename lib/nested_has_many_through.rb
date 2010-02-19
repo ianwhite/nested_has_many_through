@@ -1,3 +1,4 @@
+
 module NestedHasManyThrough
   module Reflection # :nodoc:
     def self.included(base)
@@ -16,8 +17,14 @@ module NestedHasManyThrough
     def self.included(base)
       base.class_eval do
         def construct_conditions
-          @nested_join_attributes ||= construct_nested_join_attributes
-          "#{@nested_join_attributes[:remote_key]} = #{@owner.quoted_id} #{@nested_join_attributes[:conditions]}"
+          @nested_join_attributes ||= construct_nested_join_attributes          
+          if @reflection.through_reflection && @reflection.through_reflection.macro == :belongs_to
+            puts "here?!"
+            "#{@nested_join_attributes[:remote_key]} = #{belongs_to_quoted_key} #{@nested_join_attributes[:conditions]}"
+          else            
+            "#{@nested_join_attributes[:remote_key]} = #{@owner.quoted_id} #{@nested_join_attributes[:conditions]}"
+          end          
+          
         end
 
         def construct_joins(custom_joins = nil)
@@ -27,7 +34,7 @@ module NestedHasManyThrough
       end
     end
 
-  protected    
+    protected
     # Given any belongs_to or has_many (including has_many :through) association,
     # return the essential components of a join corresponding to that association, namely:
     #
@@ -40,9 +47,9 @@ module NestedHasManyThrough
     # * <tt>:conditions</tt>: any additional conditions (e.g. filtering by type for a polymorphic association,
     #    or a :conditions clause explicitly given in the association), including a leading AND
     def construct_nested_join_attributes( reflection = @reflection, 
-                                          association_class = reflection.klass,
-                                          table_ids = {association_class.table_name => 1})
-      if reflection.macro == :has_many && reflection.through_reflection
+        association_class = reflection.klass,
+        table_ids = {association_class.table_name => 1})
+      if (reflection.macro == :has_many || reflection.macro == :has_one) && reflection.through_reflection
         construct_has_many_through_attributes(reflection, table_ids)
       else
         construct_has_many_or_belongs_to_attributes(reflection, association_class, table_ids)
@@ -133,5 +140,10 @@ module NestedHasManyThrough
         }
       end
     end
+    def belongs_to_quoted_key
+      col = @reflection.through_reflection.primary_key_name
+      @owner.quote_value(@owner.send(col), col)
+    end
+
   end
 end
