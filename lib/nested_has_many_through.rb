@@ -19,8 +19,9 @@ module NestedHasManyThrough
         def construct_conditions
           @nested_join_attributes ||= construct_nested_join_attributes          
           if @reflection.through_reflection && @reflection.through_reflection.macro == :belongs_to
-            puts "here?!"
             "#{@nested_join_attributes[:remote_key]} = #{belongs_to_quoted_key} #{@nested_join_attributes[:conditions]}"
+ #"#{@nested_join_attributes[:remote_key]} = a #{@nested_join_attributes[:conditions]}"
+
           else            
             "#{@nested_join_attributes[:remote_key]} = #{@owner.quoted_id} #{@nested_join_attributes[:conditions]}"
           end          
@@ -140,9 +141,10 @@ module NestedHasManyThrough
         }
       end
     end
+
     def belongs_to_quoted_key
       col = @reflection.through_reflection.primary_key_name
-      @owner.quote_value(@owner.send(col), col)
+      @owner.send(:quote_value, @owner.send(col), col)
     end
 
   end
