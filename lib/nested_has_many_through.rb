@@ -1,4 +1,3 @@
-
 module NestedHasManyThrough
   module Reflection # :nodoc:
     def self.included(base)
@@ -143,8 +142,9 @@ module NestedHasManyThrough
     end
 
     def belongs_to_quoted_key
-      col = @reflection.through_reflection.primary_key_name
-      @owner.send(:quote_value, @owner.send(col), col)
+      attribute = @reflection.through_reflection.primary_key_name
+      col = @owner.column_for_attribute attribute
+      @owner.send(:quote_value, @owner.send(attribute), col)
     end
 
   end
