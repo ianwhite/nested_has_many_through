@@ -47,6 +47,7 @@ Here's the original description:
 * mhoroschun
 * Ian White (http://github.com/ianwhite)
 * Claudio (http://github.com/masterkain)
+* releod (http://github.com/releod)
 
 Get in touch if you should be on this list
 
